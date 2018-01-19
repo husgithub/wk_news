@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	
+	
+	<bean id="userRealm" class="com.news.security.shiro.UserRealm">
+	    <property name="credentialsMatcher">
+	    	<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+	    		<property name="hashAlgorithmName" value="MD5"></property>
+	    		<property name="hashIterations" value="1"></property>
+	    	</bean>
+	    </property>
+	</bean>
+    
+    <!-- 自定义认证器， -->
+    <bean id="myRealmAuthenticator" class="com.news.security.shiro.MyRealmAuthenticator">
+    	<property name="myRealms">
+    		<map>
+    			<entry key="userRealm" value-ref="userRealm"></entry>
+    		</map>
+    	</property>
+    </bean>
+
+    <!-- =========================================================
+         Shiro Core Components - Not Spring Specific
+         ========================================================= -->
+    <!-- 安全管理器 -->
+    <!-- Shiro's main business-tier object for web-enabled applications
+         (use DefaultSecurityManager instead when there is no web environment)-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="cacheManager" ref="cacheManager"/>
+        <!-- Single realm app.  If you have multiple realms, use the 'realms' property instead. -->
+        <!-- <property name="sessionMode" value="native"/> -->
+        <!-- <property name="realm" ref="userRealm"/> -->
+        <property name="authenticator" ref="myRealmAuthenticator"></property>
+        <!-- 虽然设置了myRealms，但是验证权限时会用到realms，所以设置 -->
+    	<property name="realms">
+    		<list>
+    			<ref bean="userRealm"/>
+    		</list>
+    	</property>
+    </bean>
+    
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+	    <!-- <property name="globalSessionTimeout" value="60000"/>   -->
+    </bean>
+    
+    <!-- 缓存管理器 EhCacheManager：hibernate使用的缓存框架-->
+    <!-- Let's use some enterprise caching support for better performance.  You can replace this with any enterprise
+         caching framework implementation that you like (Terracotta+Ehcache, Coherence, GigaSpaces, etc -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <!-- Set a net.sf.ehcache.CacheManager instance here if you already have one.  If not, a new one
+             will be creaed with a default config:
+             <property name="cacheManager" ref="ehCacheManager"/> -->
+        <!-- If you don't have a pre-built net.sf.ehcache.CacheManager instance to inject, but you want
+             a specific Ehcache configuration to be used, specify that here.  If you don't, a default
+             will be used.:
+        <property name="cacheManagerConfigFile" value="classpath:some/path/to/ehcache.xml"/> -->
+    </bean>
+
+    <!-- Used by the SecurityManager to access security data (users, roles, etc).
+         Many other realm implementations can be used too (PropertiesRealm,
+         LdapRealm, etc. -->
+    <!-- <bean id="jdbcRealm" class="org.apache.shiro.samples.spring.realm.SaltAwareJdbcRealm">
+        <property name="name" value="jdbcRealm"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="credentialsMatcher">
+            The 'bootstrapDataPopulator' Sha256 hashes the password
+                 (using the username as the salt) then base64 encodes it:
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="SHA-256"/>
+                true means hex encoded, false means base64 encoded
+                <property name="storedCredentialsHexEncoded" value="false"/>
+            </bean>
+        </property>
+    </bean> -->
+
+    <!-- =========================================================
+         Shiro Spring-specific integration
+         ========================================================= -->
+    <!-- Post processor that automatically invokes init() and destroy() methods
+         for Spring-configured Shiro objects so you don't have to
+         1) specify an init-method and destroy-method attributes for every bean
+            definition and
+         2) even know which Shiro objects require these methods to be
+            called. -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- Enable Shiro Annotations for Spring-configured beans.  Only run after
+         the lifecycleBeanProcessor has run: -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!-- Secure Spring remoting:  Ensure any Spring Remoting method invocations can be associated
+         with a Subject for security checks. -->
+    <bean id="secureRemoteInvocationExecutor" class="org.apache.shiro.spring.remoting.SecureRemoteInvocationExecutor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!-- Define the Shiro Filter here (as a FactoryBean) instead of directly in web.xml -
+         web.xml uses the DelegatingFilterProxy to access this bean.  This allows us
+         to wire things with more control as well utilize nice Spring things such as
+         PropertiesPlaceholderConfigurer and abstract beans or anything else we might need: -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/admin-login.jsp"/>
+        <property name="successUrl" value="/admin-index.jsp"/>
+        <property name="unauthorizedUrl" value="/admin-login.jsp"/>
+        <!-- The 'filters' property is not necessary since any declared javax.servlet.Filter bean
+             defined will be automatically acquired and available via its beanName in chain
+             definitions, but you can perform overrides or parent/child consolidated configuration
+             here if you like: -->
+        <!-- <property name="filters">
+            <util:map>
+                <entry key="aName" value-ref="someFilterPojo"/>
+            </util:map>
+        </property> -->
+        <property name="filterChainDefinitions">
+            <value>
+                #静态资源
+                /bootstrap/** = anon
+                /css/** = anon
+                /datetimepicker/** = anon
+                /img/** = anon
+                /jquery/** = anon
+                /js/** = anon
+                /vue/** = anon
+                /ueditor/** = anon
+                
+                #接口
+                /news/** = anon
+                /type/** = anon
+                /upload/** = anon
+                /sys/** = anon
+                /comment/** = anon
+                
+                #前台
+                /test.jsp = anon
+                /index.jsp = anon
+                /index/** = anon
+                /detail/** = anon
+                /user/login = anon
+                /user/logout = anon
+                /user/** = roles[user]
+                
+                # allow WebStart to pull the jars for the swing app:
+                #后台
+                /admin-login.jsp = anon
+                /manager/login = anon
+                /manager/logout = anon
+                /** = roles[admin]
+                ##/** = authc
+            </value>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2017-12-18 9:55:07 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.news.entity.News" table="news" catalog="wk_news">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="title" type="string">
+            <column name="title">
+                <comment>&#177;&#234;&#204;&#226;</comment>
+            </column>
+        </property>
+        <property name="editor" type="string">
+            <column name="editor" length="128">
+                <comment>&#177;&#224;&#188;&#173;</comment>
+            </column>
+        </property>
+        <property name="source" type="string">
+            <column name="source">
+                <comment>&#192;&#180;&#212;&#180;</comment>
+            </column>
+        </property>
+        <property name="detail" type="string">
+            <column name="detail" length="65535">
+                <comment>&#207;&#234;&#199;&#233;</comment>
+            </column>
+        </property>
+        <property name="imgsrc" type="string">
+            <column name="imgsrc" length="200">
+                <comment>&#205;&#188;&#198;&#172;&#181;&#216;&#214;&#183;(0&#177;&#237;&#202;&#190;&#195;&#187;&#211;&#208;)</comment>
+            </column>
+        </property>
+        <property name="videosrc" type="string">
+            <column name="videosrc" length="200">
+                <comment>&#202;&#211;&#198;&#181;&#181;&#216;&#214;&#183;(0&#177;&#237;&#202;&#190;&#195;&#187;&#211;&#208;)</comment>
+            </column>
+        </property>
+        <property name="browsenum" type="java.lang.Integer">
+            <column name="browsenum">
+                <comment>&#228;&#175;&#192;&#192;&#193;&#191;</comment>
+            </column>
+        </property>
+        <property name="time" type="timestamp">
+            <column name="time" length="19">
+                <comment>&#202;&#177;&#188;&#228;</comment>
+            </column>
+        </property>
+        <property name="modifiedtime" type="timestamp">
+            <column name="modifiedtime" length="19">
+                <comment>&#215;&#238;&#186;&#243;&#208;&#222;&#184;&#196;&#202;&#177;&#188;&#228;</comment>
+            </column>
+        </property>
+        <property name="type" type="string">
+            <column name="type" length="128">
+                <comment>&#192;&#224;&#208;&#205;</comment>
+            </column>
+        </property>
+        <property name="isdelete" type="java.lang.Integer">
+            <column name="isdelete">
+                <comment>&#202;&#199;&#183;&#241;&#201;&#190;&#179;&#253;</comment>
+            </column>
+        </property>
+        
+        <!-- <many-to-one name="newsType" class="com.news.entity.NewsType" cascade="all" column="type" unique="true" lazy="false"></many-to-one> -->
+    </class>
+</hibernate-mapping>

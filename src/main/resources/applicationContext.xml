@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+    
+    <context:property-placeholder location="classpath:db.properties"/>
+    
+    <context:component-scan base-package="com.news" />
+    
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+       <property name="driverClass" value="${jdbc_driver}"></property>
+       <property name="jdbcUrl" value="${jdbc_url}"></property>
+       <property name="user" value="${user}"></property>
+       <property name="password" value="${password}"></property>
+    </bean>
+    
+    <!-- 初始化sessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+       <property name="dataSource" ref="dataSource"></property>
+       <property name="hibernateProperties">
+          <props>
+             <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+             <prop key="hibernate.show_sql">true</prop>
+             <prop key="hibernate.format_sql">true</prop>
+            <!--  <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop> -->
+             <prop key="hibernate.hbm2ddl.auto">update</prop>
+             <prop key="hibernate.connection.autocommit">true</prop>
+          </props>
+       </property>
+       <!-- 加载hibernate映射文件 -->
+       <property name="mappingLocations" value="classpath:com/news/entity/*.hbm.xml"></property>
+       
+    </bean>
+    
+    <!-- 配置事物管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+       <property name="dataSource" ref="dataSource"></property>
+       <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <!-- 使用注解事物 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    <!-- 多部分文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	     <property name="maxUploadSize" value="104857600" />
+	     <property name="maxInMemorySize" value="4096" />
+	     <property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
+    
+    <import resource="classpath*:spring-shiro.xml" />
+</beans>

@@ -1,0 +1,41 @@
+.form-group input{
+	width: 140px;display: inline-block;
+}
+.fixedThead{  
+    display: block;  
+    width: 100%;  
+}  
+.fixedThead tr{
+	border-top: 1px solid silver;
+}
+.scrollTbody{  
+    display: block;  
+    height: 400px;  
+    overflow: auto;  
+    width: 100%;  
+}  
+.table tbody tr td{
+	vertical-align: middle;
+}
+.div_table td,.div_table th {  
+	text-align:center;
+    width: 200px;  
+    /* border-bottom: none;  
+    border-left: none;  
+    border-right: 1px solid #CCC;  
+    border-top: 1px solid #DDD;   */
+    border :none;
+    padding: 2px 3px 3px 4px;
+}  
+
+.div_table .imgfloat{
+	float:left;
+}
+.div_table .scrollTbody .thumbnail{
+	display: inline-block;
+	padding: 0px;
+	margin: 0px;
+}
+.div_table .scrollTbody .thumbnail img{
+	display: inline-block;
+}

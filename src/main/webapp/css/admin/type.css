@@ -1,0 +1,25 @@
+.form-group input{
+	width: 180px;display: inline-block;
+}
+.fixedThead{  
+    display: block;  
+    width: 100%;  
+}  
+.scrollTbody{  
+    display: block;  
+    height: 400px;  
+    overflow: auto;  
+    width: 100%;  
+}  
+
+.div_table td,.div_table th {  
+    width: 200px;  
+    border-bottom: none;  
+    border-left: none;  
+    border-right: 1px solid #CCC;  
+    border-top: 1px solid #DDD;  
+    padding: 2px 3px 3px 4px  
+}  
+table th,td{
+	text-align: center;
+}

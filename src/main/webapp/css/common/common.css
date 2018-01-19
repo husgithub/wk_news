@@ -1,0 +1,103 @@
+/*改变全局样式*/
+*{
+	font-size:12px;
+}
+.form-control{
+	font-size:12px;
+	height: 28px;
+}
+/*表格上方的菜单*/
+.table_menu{
+}
+.table_menu button{
+	border-radius: 0px;
+	font-size: 12px;
+	display: inline-block;
+}
+/**/
+fieldset{padding:.35em .625em .75em;margin:0 2px;border:1px solid silver;
+    padding-top: 0px;
+	padding-bottom: 0px;
+	/* margin-bottom: 20px; */
+}
+legend{padding:.5em;border:0;width:auto;margin-bottom: 10px;padding: 0px;font-size: 16px;}
+/*分页*/
+.page{
+	background: #F8F8F8;
+	height: 50px;
+	display: flex;
+}
+.page .left,.right{
+	display: inline-block;
+}
+.page .left{
+	width: 40%;
+	height: 50px;
+	line-height: 50px;
+}
+.page .left .form-control{
+	width: 50px;
+	padding: 0px;
+	display: inline-block;
+}
+.page p{
+	display: inline-block;
+}
+
+.page .right{
+	width: 60%;
+	text-align:right;
+	height: 50px;
+	line-height: 50px;
+	position: relative;
+}
+.page .right .pagination{
+	display: inline-block;
+	margin: 0px;
+}
+.page .right .pagination-sm{
+	display: inline-block;
+	position: absolute;
+	top:12px;
+	right:200px;
+}
+.page .right .goto{
+	display: inline-block;
+	height: 50px;
+	line-height: 50px;
+}
+.page .right .goto .form-control{
+     width: 50px;display: inline-block;
+}
+/**
+*confirm
+**/
+.bg{ display: none;  position: absolute;  top: 0%;  left: 0%;  width: 100%;  height: 100%;  background-color: rgba(0,0,0,0.7);  z-index:1001;}
+.show{display: none;  position: absolute;  top: 25%;  left: 35%;  width: 280px;}
+.bg .panel-heading .panel-title{
+	display: inline-block;
+}
+.bg .panel-heading a{
+	display: inline-block;
+}
+.bg .panel-body{
+	text-align: center;
+}
+.bg .panel-body p{
+	margin:10px 0px;
+}
+.bg .modal-footer{
+	padding:10px;
+}
+/**
+*提示框 my_show
+*/
+.my_show{
+	width: 100%;
+	text-align: center;
+	position: absolute;  top: 0%;  left: 0%; 
+}
+.my_show .alert {
+	width: 300px;
+	margin: auto;
+}

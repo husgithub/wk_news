@@ -1,0 +1,77 @@
+@CHARSET "UTF-8";
+.qq_content {
+    border-width: 1px;
+}
+.clearfix {
+    zoom: 1;
+}
+.qq_mainArea {
+    width: 1000px;
+    float: right;
+}
+.qq_innerMain {
+    margin-top: 15px;
+}
+.qq_main {
+    width: 640px;
+    height: 100%;
+    float: left;
+    display: inline;
+}
+.qq_mainSide {
+    width: 300px;
+    height: 100%;
+    float: right;
+    display: inline;
+}
+.qq_article .hd {
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 9;
+}
+.qq_article .hd h1 {
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+.qq_article .hd .a_Info {
+    height: 26px;
+    overflow: hidden;
+    float: left;
+    display: inline;
+}
+.qq_article .hd .a_Info span {
+    float: left;
+    display: inline;
+    padding-right: 15px;
+    line-height: 26px;
+}
+.qq_article .hd .a_Info .a_time {
+    color: #999;
+}
+.qq_toolWrap .a_share, .qq_bar .a_share {
+    width: 70px;
+    margin-left: 15px;
+    position: relative;
+    float: right;
+    display: inline;
+}
+.qq_toolWrap .shareBd, .qq_bar .shareBd {
+    display: none;
+    font-size: 12px;
+    width: 70px;
+    background-color: #379be9;
+    border-radius: 4px;
+    position: absolute;
+    top: 26px;
+    left: 0;
+}
+.qq_toolWrap .a_commentNum, .qq_bar .a_commentNum {
+    float: right;
+    display: inline;
+    margin-left: 15px;
+}
+.qq_toolWrap .a_ilike, .qq_bar .a_ilike {
+    float: right;
+    display: inline;
+    position: relative;
+}
