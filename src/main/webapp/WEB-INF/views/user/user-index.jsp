@@ -42,7 +42,7 @@
 	
 	        </div>
 	        <div class="main">
-	            <h1><span id="date">2017年12月06日</span>滚动新闻</h1>
+	            <h1><span id="date"><!-- 2017年12月06日 --></span>滚动新闻</h1>
 	            <div class="querymode">
 	                <span>浏览方式：</span>
 	                <ul class="rows">
